@@ -21,7 +21,9 @@
 
   <header class="header" id="header">
     <div class="header-inner">
-      <img class="logo" src="assets/logo/4k-kmk.png" alt="KMK Cleaning Experts">
+      <a class="logo-link" href="#about" aria-label="Наверх">
+        <img class="logo" src="assets/logo/4k-kmk.png" alt="KMK Cleaning Experts">
+      </a>
       <nav class="nav" id="mainNav">
         <button class="mobile-menu-close" type="button" aria-label="Закрыть меню">
           <span></span>
@@ -151,6 +153,7 @@
               <article class="type-card" data-cleaning="maintenance">
                 <div class="type-icon"><img src="assets/calculator/firsticon.png" alt=""></div>
                 <h3>Поддерживающая</h3>
+                <button class="type-details-toggle" type="button" aria-label="Показать состав поддерживающей уборки" aria-expanded="false"></button>
                 <p>Регулярное поддержание чистоты</p>
                 <ul class="includes">
                   <li><span class="check"></span><span>Пылесосим помещения</span></li>
@@ -163,6 +166,7 @@
               <article class="type-card active" data-cleaning="general">
                 <div class="type-icon"><img src="assets/calculator/secondicon.png" alt=""></div>
                 <h3>Генеральная</h3>
+                <button class="type-details-toggle" type="button" aria-label="Показать состав генеральной уборки" aria-expanded="false"></button>
                 <p>Глубокая очистка всех зон</p>
                 <ul class="includes">
                   <li><span class="check"></span><span>Всё из поддерживающей</span></li>
@@ -176,6 +180,7 @@
               <article class="type-card" data-cleaning="postRenovation">
                 <div class="type-icon"><img src="assets/calculator/thirdicon.png" alt=""></div>
                 <h3>После ремонта</h3>
+                <button class="type-details-toggle" type="button" aria-label="Показать состав уборки после ремонта" aria-expanded="false"></button>
                 <p>Удаление строительной пыли</p>
                 <ul class="includes">
                   <li><span class="check"></span><span>Строительная пыль</span></li>
@@ -226,7 +231,7 @@
               <div class="form-group"><label for="name">Имя *</label><input type="text" id="name" placeholder="Ваше имя" required><div class="error-msg" id="nameError">Введите имя</div></div>
               <div class="form-group"><label for="phone">Телефон *</label><input type="tel" id="phone" inputmode="numeric" autocomplete="tel" placeholder="+7 (9__) ___-__-__" required><div class="error-msg" id="phoneError">Введите телефон полностью</div></div>
               <div class="form-group full address-field"><label for="address">Адрес *</label><input type="text" id="address" placeholder="Улица, дом, корпус, квартира" autocomplete="off" required><div class="address-suggestions" id="addressSuggestions"></div><div class="error-msg" id="addressError">Введите адрес</div></div>
-              <div class="form-group full"><label for="comment">Комментарий</label><textarea id="comment" placeholder="Важные детали"></textarea></div>
+              <div class="form-group full comment-field"><label for="comment">Комментарий</label><textarea id="comment" placeholder="Важные детали"></textarea></div>
               <div class="calc-consent-lines full" id="calcConsentCard">
                 <label class="consent-line compact">
                   <input type="checkbox" id="calcPersonalConsent">
@@ -973,6 +978,19 @@
 
     function initCleaningTypes() {
       document.querySelectorAll('.type-card[data-cleaning]').forEach(card => {
+        const detailsToggle = card.querySelector('.type-details-toggle');
+        if (detailsToggle) {
+          detailsToggle.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const shouldOpen = !card.classList.contains('expanded');
+            document.querySelectorAll('.type-card.expanded').forEach(item => {
+              item.classList.remove('expanded');
+              item.querySelector('.type-details-toggle')?.setAttribute('aria-expanded', 'false');
+            });
+            card.classList.toggle('expanded', shouldOpen);
+            this.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+          });
+        }
         card.addEventListener('click', function() {
           document.querySelectorAll('.type-card[data-cleaning]').forEach(c => c.classList.remove('active'));
           this.classList.add('active');
