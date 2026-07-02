@@ -739,12 +739,13 @@
       const sections = getReelSections();
       if (!sections.length) return;
 
-      const isDesktop = () => !window.matchMedia('(max-width: 900px)').matches;
+      const mq = window.matchMedia('(max-width: 900px)');
 
       let animating = false;
       let wheelDelta = 0;
       let touchStartY = 0;
       let touchLocked = false;
+      let active = false;
 
       const isFormControl = target => {
         const control = target.closest?.('input, select, textarea, [contenteditable="true"]');
@@ -787,7 +788,7 @@
       };
 
       const goToIndex = async (index, direction) => {
-        if (animating || document.body.style.overflow === 'hidden') return;
+        if (!active || animating || document.body.style.overflow === 'hidden') return;
         const targetIndex = clampIndex(index);
         const target = sections[targetIndex];
         if (!target) return;
@@ -812,45 +813,41 @@
         goToIndex(currentIndex + direction, direction);
       };
 
-      const canUseReelScroll = (target, deltaY) => {
-        if (!isDesktop()) return false;
+      function onWheel(event) {
+        if (!active) return;
+        const deltaY = event.deltaY;
         if (Math.abs(deltaY) < 10 || document.body.style.overflow === 'hidden') return;
-        if (isFormControl(target)) return false;
-        if (canScrollInsideElement(target, deltaY)) return false;
-        return true;
-      };
-
-      window.addEventListener('wheel', (event) => {
-        if (!canUseReelScroll(event.target, event.deltaY)) return;
+        if (isFormControl(event.target)) return;
+        if (canScrollInsideElement(event.target, deltaY)) return;
         event.preventDefault();
         if (animating) return;
 
-        wheelDelta += event.deltaY;
+        wheelDelta += deltaY;
         if (Math.abs(wheelDelta) < 28) return;
 
         const direction = wheelDelta > 0 ? 1 : -1;
         goByDirection(direction);
-      }, { passive: false });
+      }
 
-      window.addEventListener('touchstart', (event) => {
-        if (!isDesktop()) return;
+      function onTouchStart(event) {
+        if (!active) return;
         touchStartY = event.touches[0]?.clientY || 0;
         touchLocked = false;
-      }, { passive: true });
+      }
 
-      window.addEventListener('touchmove', (event) => {
-        if (!isDesktop()) return;
+      function onTouchMove(event) {
+        if (!active) return;
         const currentY = event.touches[0]?.clientY || 0;
         const deltaY = touchStartY - currentY;
         if (touchLocked || Math.abs(deltaY) < 42) return;
-        if (!canUseReelScroll(event.target, deltaY)) return;
+        if (!canScrollInsideElement(event.target, deltaY)) return;
         event.preventDefault();
         touchLocked = true;
         goByDirection(deltaY > 0 ? 1 : -1);
-      }, { passive: false });
+      }
 
-      window.addEventListener('keydown', (event) => {
-        if (!isDesktop()) return;
+      function onKeyDown(event) {
+        if (!active) return;
         const activeTag = document.activeElement?.tagName?.toLowerCase();
         if (['input', 'select', 'textarea'].includes(activeTag) || document.activeElement?.isContentEditable) return;
         if (['ArrowDown', 'PageDown', 'Space'].includes(event.code)) {
@@ -861,7 +858,39 @@
           event.preventDefault();
           goByDirection(-1);
         }
-      });
+      }
+
+      function attach() {
+        if (active) return;
+        active = true;
+        window.addEventListener('wheel', onWheel, { passive: false });
+        window.addEventListener('touchstart', onTouchStart, { passive: true });
+        window.addEventListener('touchmove', onTouchMove, { passive: false });
+        window.addEventListener('keydown', onKeyDown);
+      }
+
+      function detach() {
+        if (!active) return;
+        active = false;
+        animating = false;
+        wheelDelta = 0;
+        touchLocked = false;
+        window.removeEventListener('wheel', onWheel);
+        window.removeEventListener('touchstart', onTouchStart);
+        window.removeEventListener('touchmove', onTouchMove);
+        window.removeEventListener('keydown', onKeyDown);
+      }
+
+      function syncMode() {
+        if (mq.matches) {
+          detach();
+        } else {
+          attach();
+        }
+      }
+
+      syncMode();
+      mq.addEventListener('change', syncMode);
     }
 
     function alignSectionToTop(id, behavior = 'smooth') {
