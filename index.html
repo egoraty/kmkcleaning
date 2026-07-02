@@ -23,6 +23,10 @@
     <div class="header-inner">
       <img class="logo" src="assets/logo/4k-kmk.png" alt="KMK Cleaning Experts">
       <nav class="nav" id="mainNav">
+        <button class="mobile-menu-close" type="button" aria-label="Закрыть меню">
+          <span></span>
+          <span></span>
+        </button>
         <a href="#about" data-section="about" class="active">О нас</a>
         <a href="#calculator" data-section="calculator">Рассчитать стоимость</a>
         <a href="#services" data-section="services">Услуги</a>
@@ -30,8 +34,14 @@
         <a href="#contacts" data-section="contacts">Юрлицам</a>
       </nav>
       <a class="phone" href="tel:+78123272683">+7 (812) 327-26-83</a>
+      <button class="mobile-menu-toggle" type="button" aria-label="Открыть меню" aria-controls="mainNav" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </header>
+  <div class="mobile-menu-backdrop" id="mobileMenuBackdrop"></div>
 
   <main>
     <section class="site hero" id="about">
@@ -564,6 +574,7 @@
       initParallax();
       initScrollSpy();
       initHeaderScroll();
+      initMobileMenu();
       initCenteredSectionLinks();
       initSectionReveal();
       initReelScroll();
@@ -575,6 +586,57 @@
       const header = document.getElementById('header');
       window.addEventListener('scroll', () => {
         header.classList.toggle('scrolled', window.scrollY > 20);
+      });
+    }
+
+    function closeMobileMenu() {
+      const nav = document.getElementById('mainNav');
+      const toggle = document.querySelector('.mobile-menu-toggle');
+      const backdrop = document.getElementById('mobileMenuBackdrop');
+      nav?.classList.remove('open');
+      backdrop?.classList.remove('visible');
+      toggle?.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('menu-open');
+    }
+
+    function initMobileMenu() {
+      const nav = document.getElementById('mainNav');
+      const toggle = document.querySelector('.mobile-menu-toggle');
+      const close = document.querySelector('.mobile-menu-close');
+      const backdrop = document.getElementById('mobileMenuBackdrop');
+      if (!nav || !toggle || !backdrop) return;
+
+      const openMenu = () => {
+        nav.classList.add('open');
+        backdrop.classList.add('visible');
+        toggle.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('menu-open');
+      };
+
+      toggle.addEventListener('click', () => {
+        nav.classList.contains('open') ? closeMobileMenu() : openMenu();
+      });
+      close?.addEventListener('click', closeMobileMenu);
+      backdrop.addEventListener('click', closeMobileMenu);
+      nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', event => {
+          if (window.matchMedia('(max-width: 900px)').matches) {
+            const id = link.dataset.section || link.getAttribute('href')?.slice(1);
+            if (id && document.getElementById(id)) {
+              event.preventDefault();
+              closeMobileMenu();
+              window.setTimeout(() => navigateToSection(id), 40);
+            }
+            return;
+          }
+          closeMobileMenu();
+        });
+      });
+      window.addEventListener('keydown', event => {
+        if (event.key === 'Escape') closeMobileMenu();
+      });
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 900) closeMobileMenu();
       });
     }
 
@@ -592,6 +654,11 @@
     function getSectionScrollTop(id) {
       const target = document.getElementById(id);
       if (!target) return null;
+
+      if (window.matchMedia('(max-width: 900px)').matches) {
+        const offset = id === 'about' ? 0 : 10;
+        return Math.max(0, target.offsetTop - offset);
+      }
 
       if (id === 'contacts') {
         return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
@@ -661,6 +728,8 @@
     }
 
     function initReelScroll() {
+      if (window.matchMedia('(max-width: 900px)').matches) return;
+
       const sections = getReelSections();
       if (!sections.length) return;
 
