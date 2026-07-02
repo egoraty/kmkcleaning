@@ -1,4 +1,4 @@
-﻿@font-face {
+@font-face {
   font-family: 'SF Pro';
   src: local('SF Pro Display'), local('SF Pro Text'), local('-apple-system'), local('BlinkMacSystemFont');
   font-weight: 100 900;
@@ -1866,6 +1866,7 @@ main {
     color: rgba(255,255,255,0.94);
     font-size: 15px;
     background: rgba(255,255,255,0.08);
+    transition: background 0.2s, color 0.2s;
   }
 
   .nav a.active {

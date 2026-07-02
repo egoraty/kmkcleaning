@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="assets/logo/4k-kmk.ico">
 </head>
 <body>
   <div class="floating-circles">
@@ -629,6 +630,8 @@
             const id = link.dataset.section || link.getAttribute('href')?.slice(1);
             if (id && document.getElementById(id)) {
               event.preventDefault();
+              nav.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+              link.classList.add('active');
               closeMobileMenu();
               window.setTimeout(() => navigateToSection(id), 40);
             }
@@ -733,10 +736,10 @@
     }
 
     function initReelScroll() {
-      if (window.matchMedia('(max-width: 900px)').matches) return;
-
       const sections = getReelSections();
       if (!sections.length) return;
+
+      const isDesktop = () => !window.matchMedia('(max-width: 900px)').matches;
 
       let animating = false;
       let wheelDelta = 0;
@@ -810,6 +813,7 @@
       };
 
       const canUseReelScroll = (target, deltaY) => {
+        if (!isDesktop()) return false;
         if (Math.abs(deltaY) < 10 || document.body.style.overflow === 'hidden') return;
         if (isFormControl(target)) return false;
         if (canScrollInsideElement(target, deltaY)) return false;
@@ -829,11 +833,13 @@
       }, { passive: false });
 
       window.addEventListener('touchstart', (event) => {
+        if (!isDesktop()) return;
         touchStartY = event.touches[0]?.clientY || 0;
         touchLocked = false;
       }, { passive: true });
 
       window.addEventListener('touchmove', (event) => {
+        if (!isDesktop()) return;
         const currentY = event.touches[0]?.clientY || 0;
         const deltaY = touchStartY - currentY;
         if (touchLocked || Math.abs(deltaY) < 42) return;
@@ -844,6 +850,7 @@
       }, { passive: false });
 
       window.addEventListener('keydown', (event) => {
+        if (!isDesktop()) return;
         const activeTag = document.activeElement?.tagName?.toLowerCase();
         if (['input', 'select', 'textarea'].includes(activeTag) || document.activeElement?.isContentEditable) return;
         if (['ArrowDown', 'PageDown', 'Space'].includes(event.code)) {
@@ -876,8 +883,15 @@
     function initScrollSpy() {
       const sections = ['about', 'calculator', 'services', 'portfolio', 'contacts'];
       const navLinks = document.querySelectorAll('#mainNav a');
+      const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
 
-      const observer = new IntersectionObserver((entries) => {
+      const getRootMargin = () => isMobile()
+        ? '-60px 0px -50% 0px'
+        : '-80px 0px -40% 0px';
+
+      const getThreshold = () => isMobile() ? 0.15 : 0.3;
+
+      let observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const id = entry.target.id;
@@ -886,11 +900,34 @@
             });
           }
         });
-      }, { threshold: 0.3, rootMargin: '-80px 0px -40% 0px' });
+      }, { threshold: getThreshold(), rootMargin: getRootMargin() });
 
       sections.forEach(id => {
         const el = document.getElementById(id);
         if (el) observer.observe(el);
+      });
+
+      let lastIsMobile = isMobile();
+      window.addEventListener('resize', () => {
+        const nowMobile = isMobile();
+        if (nowMobile !== lastIsMobile) {
+          lastIsMobile = nowMobile;
+          observer.disconnect();
+          observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const id = entry.target.id;
+                navLinks.forEach(link => {
+                  link.classList.toggle('active', link.dataset.section === id);
+                });
+              }
+            });
+          }, { threshold: getThreshold(), rootMargin: getRootMargin() });
+          sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) observer.observe(el);
+          });
+        }
       });
     }
 
