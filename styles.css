@@ -1009,8 +1009,8 @@ main {
 
 .summary-sidebar {
   display: grid;
-  align-content: space-between;
-  gap: 8px;
+  align-content: start;
+  gap: 12px;
   border: 1px solid #e0eaf6;
   border-radius: 14px;
   padding: 10px;
@@ -1055,6 +1055,17 @@ main {
 }
 
 .summary-total .total-label { color: #526781; font-size: 12px; margin-bottom: 4px; font-weight: 650; }
+.summary-total .total-old-price {
+  width: max-content;
+  margin: 0 auto 3px;
+  color: #8da0ba;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 650;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(31, 143, 84, 0.7);
+}
 .summary-total .total-price { color: var(--blue); font-size: 32px; line-height: 1.05; font-weight: 700; letter-spacing: 0; }
 .summary-total .total-note { color: #7486a0; font-size: 10.5px; margin-top: 3px; }
 
@@ -1072,7 +1083,7 @@ main {
 
 .promo-box {
   margin-top: 0;
-  padding: 9px;
+  padding: 11px 10px;
   border: 1px solid #dce7f3;
   border-radius: 12px;
   background: #fff;
@@ -1556,7 +1567,7 @@ main {
 }
 
 .callback-control button {
-  height: 46px;
+  height: 42px;
   border: 1.5px solid var(--blue);
   border-radius: 10px;
   color: var(--blue);
@@ -2190,7 +2201,7 @@ main {
     line-height: 1.35;
   }
   .callback-control {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     margin-top: 10px;
     gap: 8px;
   }
