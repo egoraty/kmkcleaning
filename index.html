@@ -75,7 +75,7 @@
       </div>
       <div class="hero-actions">
         <a class="outline-btn" href="#calculator">Рассчитать стоимость</a>
-        <a class="hero-link" href="#portfolio">Посмотреть примеры работ</a>
+        <a class="hero-link" href="#portfolio">Примеры работ</a>
       </div>
       <div class="hero-partners" aria-label="Нам доверяют компании Санкт-Петербурга">
         <h2 class="hero-partners-title">Нам доверяют компании Санкт-Петербурга</h2>
@@ -102,7 +102,7 @@
     </section>
 
     <section class="site calculator" id="calculator">
-      <h2 class="section-title">Калькулятор расчета стоимости</h2>
+      <h2 class="section-title">Калькулятор стоимости</h2>
       <div class="calc-wrap">
         <div class="calc-subtitle" id="stepTitle">Шаг 1 из 4</div>
         <div class="steps">
@@ -289,18 +289,18 @@
               <div class="summary-total">
                 <div class="total-label">Итого</div>
                 <div class="total-price" id="totalPrice">8 900 ₽</div>
-                <div class="total-note">Уточним после заявки</div>
+                <div class="total-note"></div>
               </div>
               <div class="order-consent-card">
                 <label class="consent-line">
                   <input type="checkbox" id="orderOfferConsent">
-                  <span>Перед заказом принимаю условия <a href="/legal/public-offer/" target="_blank" rel="noopener">публичной оферты</a>. Расчёт предварительный, менеджер подтвердит детали перед началом работ.</span>
+                  <span>Принимаю условия <a href="/legal/public-offer/" target="_blank" rel="noopener">публичной оферты</a></span>
                 </label>
                 <div class="consent-error" id="orderOfferConsentError">Подтвердите принятие публичной оферты</div>
               </div>
               <div class="action-buttons">
                 <button class="btn btn-success" onclick="confirmOrder()">Заказать</button>
-                <button class="btn btn-outline" onclick="downloadPDF()">Скачать расчёт PDF</button>
+                <button class="btn btn-outline" onclick="downloadPDF()">Скачать PDF</button>
               </div>
             </div>
           </div>
@@ -344,10 +344,10 @@
     <section class="site services" id="services">
       <h2 class="section-title">Популярные услуги</h2>
       <div class="service-grid">
-        <article class="service-card"><img src="assets/services/cleaningflat.png" alt="Уборка квартиры"><div class="service-body"><h3>Уборка квартир</h3><p>Поддерживающая и генеральная уборка</p><div class="price">от 5 000 ₽</div><button class="soft-btn" onclick="openCalculatorFromService('apartment')">Подробнее</button></div></article>
-        <article class="service-card"><img src="assets/services/cleanhouse.png" alt="Уборка дома"><div class="service-body"><h3>Уборка домов</h3><p>Комплексная уборка домов и коттеджей</p><div class="price">от 7 000 ₽</div><button class="soft-btn" onclick="openCalculatorFromService('house')">Подробнее</button></div></article>
-        <article class="service-card"><img src="assets/services/cleanwindow.png" alt="Мойка окон"><div class="service-body"><h3>Мойка окон</h3><p>Без разводов, рамы и подоконники</p><div class="price">от 2 500 ₽</div><button class="soft-btn" onclick="openCalculatorFromService('windows')">Подробнее</button></div></article>
-        <article class="service-card"><img src="assets/services/cleanafterremont-service.png" alt="После ремонта"><div class="service-body"><h3>После ремонта</h3><p>Уберем строительную пыль</p><div class="price">от 8 000 ₽</div><button class="soft-btn" onclick="openCalculatorFromService('postRenovation')">Подробнее</button></div></article>
+        <article class="service-card"><img src="assets/services/cleaningflat.png" alt="Уборка квартиры"><div class="service-body"><h3>Уборка квартир</h3><p>Поддерживающая и генеральная уборка</p><div class="price">от 5 000 ₽</div><button class="soft-btn" onclick="openCalculatorFromService('apartment')">Выбрать</button></div></article>
+        <article class="service-card"><img src="assets/services/cleanhouse.png" alt="Уборка дома"><div class="service-body"><h3>Уборка домов</h3><p>Комплексная уборка домов и коттеджей</p><div class="price">от 7 000 ₽</div><button class="soft-btn" onclick="openCalculatorFromService('house')">Выбрать</button></div></article>
+        <article class="service-card"><img src="assets/services/cleanwindow.png" alt="Мойка окон"><div class="service-body"><h3>Мойка окон</h3><p>Без разводов, рамы и подоконники</p><div class="price">от 2 500 ₽</div><button class="soft-btn" onclick="openCalculatorFromService('windows')">Выбрать</button></div></article>
+        <article class="service-card"><img src="assets/services/cleanafterremont-service.png" alt="После ремонта"><div class="service-body"><h3>После ремонта</h3><p>Уберем строительную пыль</p><div class="price">от 8 000 ₽</div><button class="soft-btn" onclick="openCalculatorFromService('postRenovation')">Выбрать</button></div></article>
       </div>
     </section>
 
@@ -460,7 +460,7 @@
         <div class="callback-consent" id="callbackConsent">
           <label class="consent-line compact">
             <input type="checkbox" id="callbackPersonalConsent">
-            <span>Согласен на обработку телефона по <a href="/legal/personal-data-consent/" target="_blank" rel="noopener">согласию</a> и <a href="/legal/privacy-policy/" target="_blank" rel="noopener">политике</a>. Номер не передаём третьим лицам для рекламы.</span>
+            <span>Согласен на обработку телефона по <a href="/legal/personal-data-consent/" target="_blank" rel="noopener">согласию</a> и <a href="/legal/privacy-policy/" target="_blank" rel="noopener">политике</a></span>
           </label>
           <div class="consent-error" id="callbackConsentError">Подтвердите согласие на обработку персональных данных</div>
         </div>
@@ -1340,7 +1340,7 @@
         updateSummary();
       } else {
         document.getElementById('nextBtn').style.display = '';
-        document.getElementById('nextBtn').textContent = state.currentStep === 3 ? 'Получить расчёт' : 'Далее';
+        document.getElementById('nextBtn').textContent = state.currentStep === 3 ? 'Готово' : 'Далее';
       }
     }
 

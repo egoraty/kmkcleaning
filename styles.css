@@ -1773,12 +1773,12 @@ main {
 
   body.menu-open .header { z-index: 240; }
 
-  .site { width: min(100% - 24px, 680px); }
+  .site { width: min(100% - 32px, 680px); }
   .header {
     background: rgba(255,255,255,0.94);
   }
   .header-inner {
-    width: min(100% - 24px, 680px);
+    width: min(100% - 32px, 680px);
     gap: 12px;
   }
 
@@ -1886,23 +1886,23 @@ main {
   html { scroll-snap-type: none; }
   .hero {
     min-height: auto;
-    padding: calc(var(--header-height) + 42px) 0 28px;
+    padding: calc(var(--header-height) + 24px) 0 20px;
     scroll-snap-align: none;
     scroll-snap-stop: normal;
   }
-  .hero h1 { font-size: clamp(30px, 9vw, 38px); line-height: 1.08; margin-bottom: 14px; }
+  .hero h1 { font-size: clamp(28px, 9vw, 36px); line-height: 1.08; margin-bottom: 12px; }
   .hero h1 .line { white-space: normal; }
-  .hero p { margin-bottom: 18px; font-size: 16px; line-height: 1.35; }
+  .hero p { margin-bottom: 14px; font-size: 15px; line-height: 1.35; }
   .stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
+    gap: 6px;
     min-height: 0;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
   }
   .stat {
     min-width: 0;
-    padding: 9px 4px;
+    padding: 8px 4px;
     border-radius: 14px;
   }
   .stat-number {
@@ -1942,7 +1942,7 @@ main {
   .stat:not(:last-child)::after, .calc-cell { border-right: 0; }
   .calculator {
     width: 100%;
-    padding: calc(var(--header-height) + 14px) 0 16px;
+    padding: calc(var(--header-height) + 8px) 0 12px;
   }
   .calculator .section-title {
     margin-bottom: 4px;
@@ -1956,9 +1956,11 @@ main {
     min-height: auto;
     scroll-snap-align: none;
     scroll-snap-stop: normal;
+    padding-left: 0;
+    padding-right: 0;
   }
   .calc-wrap {
-    width: min(100% - 16px, 680px);
+    width: min(100%, 680px);
     height: auto;
     min-height: 0;
   }
@@ -2112,9 +2114,10 @@ main {
   .calc-label { font-size: 16px; }
   .outline-btn { min-width: min(100%, 320px); }
   .service-card { min-height: 0; }
-  .service-card img { height: 210px; }
-  .service-body { padding: 18px; }
-  .portfolio { width: min(100% - 24px, 680px); padding-top: calc(var(--header-height) + 28px); }
+  .service-card img { height: 180px; }
+  .service-body { padding: 16px; }
+  .services { padding: calc(var(--header-height) + 16px) 0 24px; min-height: auto; }
+  .portfolio { width: min(100% - 32px, 680px); padding-top: calc(var(--header-height) + 16px); }
   .portfolio-filters {
     width: 100%;
     display: grid;
@@ -2122,7 +2125,7 @@ main {
     gap: 6px;
     overflow: visible;
     justify-content: stretch;
-    margin-bottom: 22px;
+    margin-bottom: 16px;
     padding-bottom: 0;
   }
   .filter-pill {
@@ -2155,7 +2158,7 @@ main {
     margin-bottom: 8px;
   }
   .footer-grid {
-    width: min(100% - 24px, 680px);
+    width: min(100% - 32px, 680px);
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px 18px;
     padding-bottom: 14px;
